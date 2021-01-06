@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: .
+    #restart: always
+    image: postgres-conf-db:12-alpine
+    secrets:
+      - postgres-password
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+    env_file: 
+      - ./.env.props
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata_db:/var/lib/postgresql/data  
+
+volumes:
+  pgdata_db:
+    driver: local
+
+secrets:
+  postgres-password:
+    file: ./secrets/postgres-password.sec
